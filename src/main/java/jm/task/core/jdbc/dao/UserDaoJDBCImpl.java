@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl implements UserDao {
+public class UserDaoJDBCImpl implements UserDao, AutoCloseable {
     public UserDaoJDBCImpl() throws SQLException {
 
     }
@@ -85,6 +85,11 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             System.out.println("Ошибка при попытке очистить таблицу\n" + e.getMessage());
         }
+
+    }
+
+    @Override
+    public void close() throws Exception {
 
     }
 }
