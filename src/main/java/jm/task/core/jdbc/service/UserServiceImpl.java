@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     public void createUsersTable() {
         userDao.createUsersTable();
     }
