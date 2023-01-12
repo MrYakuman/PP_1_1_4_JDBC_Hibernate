@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl implements UserDao, AutoCloseable {
+public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() throws SQLException {
 
     }
@@ -102,9 +102,4 @@ public class UserDaoJDBCImpl implements UserDao, AutoCloseable {
         return userList;
     }
 
-
-    @Override
-    public void close() throws Exception {
-
-    }
 }
