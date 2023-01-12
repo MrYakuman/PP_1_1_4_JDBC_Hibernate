@@ -12,17 +12,16 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    private final Connection connection = Util.getConnection();
-    private final Statement statement = connection.createStatement();
-
-
     public void createUsersTable() { //ddl запрос
         final String commandsCreateTable = "CREATE TABLE IF NOT EXISTS databasefokatatask.users (id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
                 "name VARCHAR(45) NOT NULL, " +
                 "lastname VARCHAR(45) NOT NULL, " +
                 "age TINYINT NOT NULL)";
-        try {
+
+        try (Statement statement = Util.getConnection().createStatement()) {
+
             statement.executeUpdate(commandsCreateTable);
+
             System.out.println("Таблица успешно создана");
         } catch (SQLException e) {
             System.out.println("Ошибка при попытке создать таблицу\n" + e.getMessage());
@@ -31,8 +30,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() { //ddl запрос
         final String commandsDropTable = "DROP TABLE IF EXISTS databasefokatatask.users";
-        try {
+
+        try (Statement statement = Util.getConnection().createStatement()) {
+
             statement.executeUpdate(commandsDropTable);
+
             System.out.println("Таблица удалена");
         } catch (SQLException e) {
             System.out.println("Ошибка при попытке удалить таблицу\n" + e.getMessage());
@@ -41,8 +43,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() { //ddl запрос
         final String commandsCleanTable = "TRUNCATE TABLE databasefokatatask.users";
-        try {
+        try (Statement statement = Util.getConnection().createStatement()) {
+
             statement.executeUpdate(commandsCleanTable);
+
             System.out.println("Таблица очищена");
         } catch (SQLException e) {
             System.out.println("Ошибка при попытке очистить таблицу\n" + e.getMessage());
@@ -52,7 +56,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void saveUser(String name, String lastName, byte age) { //dml запрос
         final String commandsInsertTable = "INSERT INTO databasefokatatask.users (name, lastName, age) VALUES (?, ?, ?)";
-        try {
+
+        try (Connection connection = Util.getConnection()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement(commandsInsertTable);
 
             preparedStatement.setString(1, name);
@@ -69,7 +75,9 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) { //dml запрос
         final String commandsDeleteTable = "DELETE FROM databasefokatatask.users WHERE id = ?";
-        try {
+
+        try (Connection connection = Util.getConnection()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement(commandsDeleteTable);
 
             preparedStatement.setLong(1, id);
@@ -85,7 +93,9 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() { //dml запрос
         List<User> userList = new ArrayList<>();
         final String commandsSelectTable = "SELECT * FROM databasefokatatask.users";
-        try {
+
+        try (Connection connection = Util.getConnection()) {
+
             PreparedStatement preparedStatement = connection.prepareStatement(commandsSelectTable);
             ResultSet resultSet = preparedStatement.executeQuery();
 
