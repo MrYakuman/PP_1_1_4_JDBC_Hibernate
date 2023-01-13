@@ -1,5 +1,6 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 
@@ -8,23 +9,23 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         try {
-            UserDaoJDBCImpl userDaoJDBC = new UserDaoJDBCImpl();
+            UserDao userDao = new UserDaoJDBCImpl();
 
-            userDaoJDBC.createUsersTable();
+            userDao.createUsersTable();
 
-            userDaoJDBC.saveUser("Steve", "Vai", (byte) 62);
-            userDaoJDBC.saveUser("Joseph", "Satriani", (byte) 66);
-            userDaoJDBC.saveUser("Paul", "Gilbert", (byte) 56);
-            userDaoJDBC.saveUser("Michael", "Batio", (byte) 66);
+            userDao.saveUser("Steve", "Vai", (byte) 62);
+            userDao.saveUser("Joseph", "Satriani", (byte) 66);
+            userDao.saveUser("Paul", "Gilbert", (byte) 56);
+            userDao.saveUser("Michael", "Batio", (byte) 66);
 
-            List<User> userArrayList = userDaoJDBC.getAllUsers();
+            List<User> userArrayList = userDao.getAllUsers();
             for (User user : userArrayList) {
                 System.out.println(user.toString());
             }
 
-            userDaoJDBC.cleanUsersTable();
+            userDao.cleanUsersTable();
 
-            userDaoJDBC.dropUsersTable();
+            userDao.dropUsersTable();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
