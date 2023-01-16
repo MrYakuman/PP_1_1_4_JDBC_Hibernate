@@ -21,6 +21,8 @@ public class Main {
             userDao.saveUser("Paul", "Gilbert", (byte) 56);
             userDao.saveUser("Michael", "Batio", (byte) 66);
 
+            userDao.removeUserById(3L);
+
             List<User> userArrayList = userDao.getAllUsers();
             for (User user : userArrayList) {
                 System.out.println(user.toString());

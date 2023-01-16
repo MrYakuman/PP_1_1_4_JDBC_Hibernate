@@ -2,10 +2,16 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaQuery;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
+
+import javax.persistence.criteria.CriteriaQuery;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -83,12 +89,15 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void removeUserById(long id) { //dml запрос
         Transaction transaction = null;
-        final String COMANDS = "DELETE User WHERE id = :id";
+        final String nativeCOMANDS = String.format("DELETE FROM users WHERE id = %s", id);
+        final String hqlCOMANDS = "DELETE User WHERE id = :id";
 
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
-            session.createNativeQuery(COMANDS).setParameter("id", id);
+//            session.remove(session.load(User.class,id)); // Criteria API
+//            session.createNativeQuery(nativeCOMANDS).executeUpdate(); // Native SQL
+            session.createQuery(hqlCOMANDS).setParameter("id", id).executeUpdate(); //HQL
 
             transaction.commit();
 
@@ -103,9 +112,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() { //dml запрос
-        final String COMANDS = "from User";
+        final String hqlCOMANDS = "from User";
         try (Session session = Util.getSessionFactory().openSession()) {
-            return session.createQuery(COMANDS, User.class).list();
+//            return session.createCriteria(User.class).list(); // Criteria API
+            return session.createQuery(hqlCOMANDS, User.class).list(); //HQL
         }
     }
 
