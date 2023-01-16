@@ -47,7 +47,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
             statement.executeUpdate(COMANDS);
 
-            System.out.println("Таблица очищена");
+            System.out.println("Таблица удаленна");
         } catch (SQLException e) {
             System.out.println("Ошибка при попытке очистить таблицу\n" + e.getMessage());
         }
