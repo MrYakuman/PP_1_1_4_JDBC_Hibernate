@@ -20,14 +20,17 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     public void createUsersTable() {
+        Transaction transaction;
+        final String COMANDS = "CREATE TABLE databasefokatatask.users (id INT NOT NULL AUTO_INCREMENT, " +
+                "name VARCHAR(45) NOT NULL,lastname VARCHAR(45) NOT NULL," +
+                "age INT NOT NULL, PRIMARY KEY (id)) " +
+                "ENGINE = InnoDB DEFAULT CHARACTER SET = utf8";
         try (Session session = Util.getSessionFactory().getCurrentSession()) {
-            session.beginTransaction();
-            String sql = "CREATE TABLE databasefokatatask.users (id INT NOT NULL AUTO_INCREMENT, " +
-                    "name VARCHAR(45) NOT NULL,lastname VARCHAR(45) NOT NULL," +
-                    "age INT NOT NULL, PRIMARY KEY (id)) " +
-                    "ENGINE = InnoDB DEFAULT CHARACTER SET = utf8";
-            session.createNativeQuery(sql, User.class).executeUpdate();
-            session.getTransaction().commit();
+            transaction = session.beginTransaction();
+
+            session.createNativeQuery(COMANDS, User.class).executeUpdate();
+
+            transaction.commit();
             System.out.println("Таблица успешно создана");
         } catch (Exception e) {
             System.out.println("Ошибка при попытке создать таблицу \n" + e.getMessage());
@@ -89,18 +92,17 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void removeUserById(long id) { //dml запрос
         Transaction transaction = null;
-        final String nativeCOMANDS = String.format("DELETE FROM users WHERE id = %s", id);
-        final String hqlCOMANDS = "DELETE User WHERE id = :id";
+        final String NATIVECOMANDS = String.format("DELETE FROM users WHERE id = %s", id);
+        final String HQLCOMANDS = "DELETE User WHERE id = :id";
 
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
 //            session.remove(session.load(User.class,id)); // Criteria API
-//            session.createNativeQuery(nativeCOMANDS).executeUpdate(); // Native SQL
-            session.createQuery(hqlCOMANDS).setParameter("id", id).executeUpdate(); //HQL
+//            session.createNativeQuery(NATIVECOMANDS).executeUpdate(); // Native SQL
+            session.createQuery(HQLCOMANDS).setParameter("id", id).executeUpdate(); //HQL
 
             transaction.commit();
-
             System.out.println("Пользователь удален");
         } catch (Exception e) {
             if (transaction != null) {
@@ -112,10 +114,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() { //dml запрос
-        final String hqlCOMANDS = "from User";
+        final String HQLCOMANDS = "from User";
         try (Session session = Util.getSessionFactory().openSession()) {
 //            return session.createCriteria(User.class).list(); // Criteria API
-            return session.createQuery(hqlCOMANDS, User.class).list(); //HQL
+            return session.createQuery(HQLCOMANDS, User.class).list(); //HQL
         }
     }
 

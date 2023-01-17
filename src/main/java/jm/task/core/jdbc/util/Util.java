@@ -13,13 +13,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Util {
-    private static final String url = "jdbc:mysql://localhost:3306/databasefokatatask?serverTimezone=Europe/Moscow&useSSL=false";
-    private static final String username = "root";
-    private static final String password = "abcd1";
+    private static final String URL = "jdbc:mysql://localhost:3306/databasefokatatask?serverTimezone=Europe/Moscow&useSSL=false";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "abcd1";
 
     public static Connection getConnection() {
         try {
-            Connection connection = DriverManager.getConnection(url,username,password);
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Соединение с базой данных установлено");
             return connection;
         } catch (SQLException e) {
@@ -36,9 +36,9 @@ public class Util {
 
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/databasefokatatask?useSSL=false");
-                settings.put(Environment.USER, "root");
-                settings.put(Environment.PASS, "abcd1");
+                settings.put(Environment.URL, URL);
+                settings.put(Environment.USER, USERNAME);
+                settings.put(Environment.PASS, PASSWORD);
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
                 settings.put(Environment.SHOW_SQL, "false");
